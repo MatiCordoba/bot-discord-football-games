@@ -19,7 +19,7 @@ class General(commands.Cog):
         embed.add_field(
             name="🎲 Juegos disponibles",
             value=(
-                "• `adivina-jugador` – ¿Quién soy? versión fútbol ⚽\n"
+                "• `adivinar` – ¿Quién soy? versión fútbol ⚽\n"
                 "• `impostor` – Impostor versión fútbol ⚽\n"
                 "• (Próximamente más juegos... 🧩)"
             ),
@@ -54,13 +54,14 @@ class General(commands.Cog):
                 "ℹ️ Especificá un juego para ver sus reglas.\n"
                 "Ejemplo: `!reglas adivina-jugador`\n\n"
                 "🎮 Juegos disponibles:\n"
-                "- `adivina-jugador`"
+                "- `adivinar`\n"
+                "- `impostor`"
             )
             return
 
         juego = juego.lower().strip()
 
-        if juego == "adivina-jugador":
+        if juego == "adivinar":
             embed = discord.Embed(
                 title="📜 Reglas de Adivina-jugador",
                 description="¿Quién soy? versión fútbol",
@@ -113,6 +114,44 @@ class General(commands.Cog):
 
         else:
             await ctx.send("❌ Juego no reconocido. Probá con `!reglas` para ver la lista.")
+
+    @commands.command(name="empezar")
+    async def empezar(self, ctx, juego: str = None):
+        if not juego:
+            await ctx.send("📌 Usá `!empezar <juego>` para iniciar un juego. Ej: `!empezar impostor`")
+            return
+
+        juego = juego.lower()
+
+        # Llamamos el comando correspondiente manualmente
+        if juego == "impostor":
+            comando = self.bot.get_command("empezar_impostor")
+        elif juego == "adivinar":
+            comando = self.bot.get_command("empezar_adivinar")
+        else:
+            await ctx.send("❌ Juego no reconocido. Juegos disponibles: `impostor`, `adivinar`.")
+            return
+
+        # Ejecutamos el comando redirigido
+        await ctx.invoke(comando, juego=juego)
+
+        @commands.command(name="terminar")
+        async def terminar(self, ctx, juego: str = None):
+            if not juego:
+                await ctx.send("📌 Usá `!terminar <juego>` para finalizar un juego. Ej: `!terminar impostor`")
+                return
+
+            juego = juego.lower()
+
+            if juego == "impostor":
+                comando = self.bot.get_command("terminar_impostor")
+            elif juego == "adivinar":
+                comando = self.bot.get_command("terminar_adivinar")
+            else:
+                await ctx.send("❌ Juego no reconocido. Juegos disponibles: `impostor`, `adivinar`.")
+                return
+
+            await ctx.invoke(comando, juego=juego)
 
 async def setup(bot):
     await bot.add_cog(General(bot))

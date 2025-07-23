@@ -17,6 +17,7 @@ async def on_ready():
 async def main():
     # Cargamos las extensiones correctamente con await
     await bot.load_extension("cogs.adivina_jugador")
+    await bot.load_extension("cogs.impostor")
     await bot.load_extension("cogs.general")
     await bot.start(os.getenv("DISCORD_TOKEN"))
 
