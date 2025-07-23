@@ -135,23 +135,23 @@ class General(commands.Cog):
         # Ejecutamos el comando redirigido
         await ctx.invoke(comando, juego=juego)
 
-        @commands.command(name="terminar")
-        async def terminar(self, ctx, juego: str = None):
-            if not juego:
-                await ctx.send("📌 Usá `!terminar <juego>` para finalizar un juego. Ej: `!terminar impostor`")
-                return
+    @commands.command(name="terminar")
+    async def terminar(self, ctx, juego: str = None):
+        if not juego:
+            await ctx.send("📌 Usá `!terminar <juego>` para finalizar un juego. Ej: `!terminar impostor`")
+            return
 
-            juego = juego.lower()
+        juego = juego.lower()
 
-            if juego == "impostor":
-                comando = self.bot.get_command("terminar_impostor")
-            elif juego == "adivinar":
-                comando = self.bot.get_command("terminar_adivinar")
-            else:
-                await ctx.send("❌ Juego no reconocido. Juegos disponibles: `impostor`, `adivinar`.")
-                return
+        if juego == "impostor":
+            comando = self.bot.get_command("terminar_impostor")
+        elif juego == "adivinar":
+            comando = self.bot.get_command("terminar_adivinar")
+        else:
+            await ctx.send("❌ Juego no reconocido. Juegos disponibles: `impostor`, `adivinar`.")
+            return
 
-            await ctx.invoke(comando, juego=juego)
+        await ctx.invoke(comando, juego=juego)
 
 async def setup(bot):
     await bot.add_cog(General(bot))
